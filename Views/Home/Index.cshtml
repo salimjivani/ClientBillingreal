@@ -2,12 +2,36 @@
     ViewBag.Title = "Home Page";
 }
 
-<div id="testing">Click me</div>
-<div id="codemaint">Code Maint Click here</div>
+<div class="container">
+    <div id="testing">Click me</div>
+    <div id="codemaint">Code Maint Click here</div>
+    <div id="codes">
+        <div class="panel panel-default">
+            <div class="panel-heading">Panel Heading</div>
+            <div class="panel-body">
+                <div id ="col-md-4" class="col-md-4">
+                    <label>GL_Database</label><input type="text" />
+                </div>
+                <div class="col-md-4">
+                    <label>GL_Database</label><input type="text" />
+                </div>
+                <div class="col-md-4">
+                    <label>GL_Database</label><input type="text" />
+                </div>
+                <div class="col-md-4">
+                    <label>GL_Database</label><input type="text" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 
-    $("#codemaint").click(function () {
+    var codemaint = [];
+
+    //$("#codemaint").ready(function () {
         $.ajax({
             url: "/Home/Businesslogicinputs",
             contentType: "application/json; charset=utf-8",
@@ -18,12 +42,19 @@
             success: function (json) {
                 console.log(json);
                 $('#codemaint').html(json[3].Titles[7] + " : " + json[3].Details[0].DetailModelValues[7].value);
-                
+                codemaint = json;
             },
             error: function () {    
                 $("#codemaint").html("ERROR");
             }
         });
-    });    
+    //}); -- end of function 
+
+        for (x = 0; x < codemaint.length; x++)
+        {
+            $("#codemaint").append("<div class='panel panel-danger'><div class='panel-heading'>" + codemaint[x].Sheet + "</div><div class='panel-body'>Panel Content</div>");
+        }
+
+        alert($("#codemaint").count);
 
 </script>
