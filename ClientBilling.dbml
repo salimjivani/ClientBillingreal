@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Avenue5" Class="ClientBillingDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DESKTOP-JVLUFOT\SQLEXPRESS;Initial Catalog=Avenue5;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Avenue5ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.BusinessLogic" Member="BusinessLogics">
+    <Type Name="BusinessLogic">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Sheet" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="BusinessLogic_BusinessLogicLabel" Member="BusinessLogicLabels" ThisKey="ID" OtherKey="BusinessLogicID" Type="BusinessLogicLabel" />
+      <Association Name="Client_BusinessLogic" Member="Client" ThisKey="ClientID" OtherKey="ID" Type="Client" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BusinessLogic" Member="BusinessLogic1s">
+    <Type Name="BusinessLogic1">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Sheet" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="BusinessLogic1_BusinessLogicLabel" Member="BusinessLogicLabels" ThisKey="ID" OtherKey="BusinessLogicID" Type="BusinessLogicLabel" />
+      <Association Name="Client_BusinessLogic1" Member="Client" ThisKey="ClientID" OtherKey="ID" Type="Client" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BusinessLogicDetails" Member="BusinessLogicDetails">
+    <Type Name="BusinessLogicDetail">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Number" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BusinessLogicLabelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="BusinessLogicLabel_BusinessLogicDetail" Member="BusinessLogicLabel" ThisKey="BusinessLogicLabelID" OtherKey="ID" Type="BusinessLogicLabel" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BusinessLogicLabels" Member="BusinessLogicLabels">
+    <Type Name="BusinessLogicLabel">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BusinessLogicID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="BusinessLogicLabel_BusinessLogicDetail" Member="BusinessLogicDetails" ThisKey="ID" OtherKey="BusinessLogicLabelID" Type="BusinessLogicDetail" />
+      <Association Name="BusinessLogicLabel_SummaryPayData" Member="SummaryPayDatas" ThisKey="ID" OtherKey="BusinessLogicLabelID" Type="SummaryPayData" />
+      <Association Name="BusinessLogic_BusinessLogicLabel" Member="BusinessLogic" ThisKey="BusinessLogicID" OtherKey="ID" Type="BusinessLogic" IsForeignKey="true" />
+      <Association Name="BusinessLogic1_BusinessLogicLabel" Member="BusinessLogic1" ThisKey="BusinessLogicID" OtherKey="ID" Type="BusinessLogic1" IsForeignKey="true" />
+      <Association Name="Client_BusinessLogicLabel" Member="Client" ThisKey="ClientID" OtherKey="ID" Type="Client" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Clients" Member="Clients">
+    <Type Name="Client">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Client" Member="Client1" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="Client_BusinessLogic" Member="BusinessLogics" ThisKey="ID" OtherKey="ClientID" Type="BusinessLogic" />
+      <Association Name="Client_BusinessLogic1" Member="BusinessLogic1s" ThisKey="ID" OtherKey="ClientID" Type="BusinessLogic1" />
+      <Association Name="Client_BusinessLogicLabel" Member="BusinessLogicLabels" ThisKey="ID" OtherKey="ClientID" Type="BusinessLogicLabel" />
+      <Association Name="Client_CodeDetail" Member="CodeDetails" ThisKey="ID" OtherKey="ClientiD" Type="CodeDetail" />
+      <Association Name="Client_Code" Member="Codes" ThisKey="ID" OtherKey="ClientID" Type="Code" />
+      <Association Name="Client_EmpDetail" Member="EmpDetails" ThisKey="ID" OtherKey="ClientID" Type="EmpDetail" />
+      <Association Name="Client_Load" Member="Loads" ThisKey="ID" OtherKey="ClientID" Type="Load" />
+      <Association Name="Client_SummaryPayData" Member="SummaryPayDatas" ThisKey="ID" OtherKey="ClientID" Type="SummaryPayData" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CodeDetails" Member="CodeDetails">
+    <Type Name="CodeDetail">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodesID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Code" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Short Description]" Member="Short_Description" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Check Stub Description]" Member="Check_Stub_Description" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Total Comp Category]" Member="Total_Comp_Category" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Pay Class]" Member="Pay_Class" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Job Title]" Member="Job_Title" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[EEO Code]" Member="EEO_Code" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Default WC Code]" Member="Default_WC_Code" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address1" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Address2" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[State or Province]" Member="State_or_Province" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Zip Code]" Member="Zip_Code" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Payroll Contact Name]" Member="Payroll_Contact_Name" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Payroll Contact Phone]" Member="Payroll_Contact_Phone" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Payroll Contact Title]" Member="Payroll_Contact_Title" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Local Phone Num]" Member="Local_Phone_Num" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="TaxID" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="[Tax GeoCode]" Member="Tax_GeoCode" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="State" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Payee" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Rate" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="ClientiD" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Client_CodeDetail" Member="Client" ThisKey="ClientiD" OtherKey="ID" Type="Client" IsForeignKey="true" />
+      <Association Name="Code_CodeDetail" Member="Code1" ThisKey="CodesID" OtherKey="ID" Type="Code" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Codes" Member="Codes">
+    <Type Name="Code">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Type" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ClientID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Code_CodeDetail" Member="CodeDetails" ThisKey="ID" OtherKey="CodesID" Type="CodeDetail" />
+      <Association Name="Client_Code" Member="Client" ThisKey="ClientID" OtherKey="ID" Type="Client" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EmpDetails" Member="EmpDetails">
+    <Type Name="EmpDetail">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ExponentHRID" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="EmpNo" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="EmployementStatus" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="EmploymentType" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CompanyCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="JobCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DepartmentCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DivisionCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="LocationCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="ProjectCostCenterCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="ShiftCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Contractor" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="ContractorType" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="PayGroupCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="Client_EmpDetail" Member="Client" ThisKey="ClientID" OtherKey="ID" Type="Client" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.importCodes" Member="importCodes">
+    <Type Name="importCode">
+      <Column Name="Type" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Code" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Field" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.importEmpData" Member="importEmpDatas">
+    <Type Name="importEmpData">
+      <Column Name="ExponentHRID" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="EmpNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="EmploymentStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="EmploymentType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CompanyCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="JobCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DepartmentCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DivisionCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LocationCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ProjectCostCenterCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ShiftCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Contractor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ContractorType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PayGroupCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.importExpReimb" Member="importExpReimbs">
+    <Type Name="importExpReimb">
+      <Column Name="CompanyCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PayGroupCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ExponentHRID" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="JobCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DepartmentCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DivisionCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LocationCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ProjectCostCenterCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ShiftCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Batch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Voucher" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CheckNum" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CheckData" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PayCodeType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PayCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Units" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Rate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Amount" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Purpose" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Category" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Type" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.importMiscFees" Member="importMiscFees">
+    <Type Name="importMiscFee">
+      <Column Name="CompanyCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LocationCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Batch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Date" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Type" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Amount" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Comment" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.importPaydata" Member="importPaydatas">
+    <Type Name="importPaydata">
+      <Column Name="CompanyCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PayGroupCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ExponentHRID" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="JobCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DepartmentCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DivisionCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LocationCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ProjectCostCenterCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ShiftCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Batch" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Voucher" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CheckNum" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CheckDate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PayCodeType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PayCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Units" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Rate" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Amount" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[Load]" Member="Loads">
+    <Type Name="Load">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CheckDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TimeStamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Load_SummaryPayData" Member="SummaryPayDatas" ThisKey="ID" OtherKey="LoadID" Type="SummaryPayData" />
+      <Association Name="Client_Load" Member="Client" ThisKey="ClientID" OtherKey="ID" Type="Client" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SummaryPayData" Member="SummaryPayDatas">
+    <Type Name="SummaryPayData">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompanyCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="PayGroupCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="ExponentHRID" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="JobCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DepartmentCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DivisionCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="LocationCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="ProjectCostCenterCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="ShiftCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Batch" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Voucher" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CheckNum" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CheckDate" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="PayCodeType" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Units" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Rate" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Amount" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="SummaryClass" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="SummaryCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="SummaryDescription" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="BusinessLogicLabelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SummaryOrder" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Purpose" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Category" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Type" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="BusinessLogicLabel_SummaryPayData" Member="BusinessLogicLabel" ThisKey="BusinessLogicLabelID" OtherKey="ID" Type="BusinessLogicLabel" IsForeignKey="true" />
+      <Association Name="Client_SummaryPayData" Member="Client" ThisKey="ClientID" OtherKey="ID" Type="Client" IsForeignKey="true" />
+      <Association Name="Load_SummaryPayData" Member="Load" ThisKey="LoadID" OtherKey="ID" Type="Load" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
