@@ -9,17 +9,25 @@
         <div class="panel panel-default">
             <div class="panel-heading">Panel Heading</div>
             <div class="panel-body">
-                <div id ="col-md-4" class="col-md-4">
-                    <label>GL_Database</label><input type="text" />
+                <div class="row" id="row">
+                    <div id ="col-md-4" class="col-md-4">
+                        <label>GL_Database </label><input type="text" />
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <label>GL_Database</label><input type="text" />
-                </div>
-                <div class="col-md-4">
-                    <label>GL_Database</label><input type="text" />
-                </div>
-                <div class="col-md-4">
-                    <label>GL_Database</label><input type="text" />
+                <hr>
+                <div class="row">
+                    <div id="col-md-4" class="col-md-4">
+                        <label>GL_Database</label><input type="text" />
+                    </div>
+                    <div class="col-md-4">
+                        <label>GL_Database</label><input type="text" />
+                    </div>
+                    <div class="col-md-4">
+                        <label>GL_Database</label><input type="text" />
+                    </div>
+                    <div class="col-md-4">
+                        <label>GL_Database</label><input type="text" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,9 +60,15 @@
 
         for (x = 0; x < codemaint.length; x++)
         {
-            $("#codemaint").append("<div class='panel panel-danger'><div class='panel-heading'>" + codemaint[x].Sheet + "</div><div class='panel-body'>Panel Content</div>");
+            $("#codemaint").prepend("<div id='mainpanel' class='panel panel-default'><div id='panelheading' class='panel-heading'>" + codemaint[x].Sheet + "(" + codemaint[x].Details.length + ")" + "</div><div id='panelbody' class='panel-body'><div id='panelnumber'></div></div></div>");
+
         }
 
-        alert($("#codemaint").count);
+        var panelrow = $('<p>hello</p>').html();
+        $('#panelnumber').append(panelrow);
+
+
+        //alert($('.panel-body > .row').length);
+        //alert(codemaint[2].Details[786].DetailModelValues[3].value);
 
 </script>
