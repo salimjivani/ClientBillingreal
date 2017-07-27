@@ -1,74 +1,110 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
-<div class="container">
-    <div id="testing">Click me</div>
-    <div id="codemaint">Code Maint Click here</div>
-    <div id="codes">
-        <div class="panel panel-default">
-            <div class="panel-heading">Panel Heading</div>
-            <div class="panel-body">
-                <div class="row" id="row">
-                    <div id ="col-md-4" class="col-md-4">
-                        <label>GL_Database </label><input type="text" />
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div id="col-md-4" class="col-md-4">
-                        <label>GL_Database</label><input type="text" />
-                    </div>
-                    <div class="col-md-4">
-                        <label>GL_Database</label><input type="text" />
-                    </div>
-                    <div class="col-md-4">
-                        <label>GL_Database</label><input type="text" />
-                    </div>
-                    <div class="col-md-4">
-                        <label>GL_Database</label><input type="text" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+
+    function $_GET(param) {
+        var vars = {};
+        window.location.href.replace(location.hash, '').replace(
+            /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+            function (m, key, value) { // callback
+                vars[key] = value !== undefined ? value : '';
+            }
+        );
+
+        if (param) {
+            return vars[param] ? vars[param] : null;
+        }
+        return vars;
+    }
+
+    var businesslogicsheet = Number($_GET('data'));
 
     var codemaint = [];
 
     //$("#codemaint").ready(function () {
-        $.ajax({
-            url: "/Home/Businesslogicinputs",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: false,
-            type: "POST",
-            data: "data",
-            success: function (json) {
-                console.log(json);
-                $('#codemaint').html(json[3].Titles[7] + " : " + json[3].Details[0].DetailModelValues[7].value);
-                codemaint = json;
-            },
-            error: function () {    
-                $("#codemaint").html("ERROR");
-            }
-        });
+    $.ajax({
+        url: "/Home/Businesslogicinputs",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: false,
+        type: "POST",
+        data: "data",
+        success: function (json) {
+            console.log(json);
+            //$('#codemaint').html(json[3].Titles[7] + " : " + json[3].Details[0].DetailModelValues[7].value);
+            codemaint = json;
+        },
+        error: function () {
+            $("#codemaint").html("ERROR");
+        }
+    });
     //}); -- end of function 
 
-        for (x = 0; x < codemaint.length; x++)
+</script>
+
+<div class="container">
+    <div id="codemaintinputs">
+        <form method="post">
+            <div id="codemaint"></div>
+            <div id="businesslogicpagination">
+                <ul class="pagination"></ul>
+            </div>
+            <input type="submit" />
+        </form>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p><label>GL_Database</label><input type='text' /></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    </div>
+
+
+<script>
+
+    var panels = "<div id='mainpanel' class='panel panel-default'><div id='panelheading' class='panel-heading'>GLDatabase(11)</div><div id='panelbody' class='panel-body'><div id='panelnumber'></div></div></div>";
+    var panelbody = "<div id='col-md-4' class='col-md-4'><label>GL_Database</label><input type='text' /></div>";
+
+    //Dynamically filling up input boxes
+    //for (a = 0; a < codemaint.length; a++)
+    for (a = businesslogicsheet; a < businesslogicsheet + 1; a++)
+    {
+        $("#codemaint").append($("<div class='panel panel-default mainpanel" + a + "'><div id='panelheading' class='panel-heading'>" + codemaint[a].Sheet + "<div class='pull-right'><button type='button' id='add' data-toggle='modal' data-target='#myModal' class='btn-success'>Add +</button></div></div><div id='panelbody" + a + "' class='panel-body panelbody" + a + "'><div id='panelnumber'></div></div></div>"));
+        for (b = 0; b < codemaint[a].Details.length; b++)
         {
-            $("#codemaint").prepend("<div id='mainpanel' class='panel panel-default'><div id='panelheading' class='panel-heading'>" + codemaint[x].Sheet + "(" + codemaint[x].Details.length + ")" + "</div><div id='panelbody' class='panel-body'><div id='panelnumber'></div></div></div>");
-
+            $(".mainpanel" + a + "> #panelbody" + a).append($("<div class='row row" + b + "'></div><hr>"));
+            for (c = 0; c < codemaint[a].Titles.length; c++)
+            {
+                $(".mainpanel" + a + "> #panelbody" + a + "> .row" + b).append($("<div class='col-md-4'><label>" + codemaint[a].Titles[c] + "</label><br><input type='text' value='" + codemaint[a].Details[b].DetailModelValues[c].value + "'/></div>"));
+            }
         }
+    }
 
-        var panelrow = $('<p>hello</p>').html();
-        $('#panelnumber').append(panelrow);
+    //Dynamically filling up Pagination
+    for (d = 0; d < codemaint.length; d++)
+    {
+        $(".pagination").append($("<li><a href='http://localhost:50008/?data=" + d + "'>" + codemaint[d].Sheet + "</a></li>"));
+    }
 
-
-        //alert($('.panel-body > .row').length);
-        //alert(codemaint[2].Details[786].DetailModelValues[3].value);
 
 </script>
