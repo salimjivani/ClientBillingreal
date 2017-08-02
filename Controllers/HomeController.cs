@@ -25,6 +25,7 @@ namespace ClientBilling.Controllers
             var businesslogicdetails = (from a in cm.BusinessLogicDetails
                                         join b in cm.BusinessLogicLabels on a.BusinessLogicLabelID equals b.ID
                                         join c in cm.BusinessLogics on b.BusinessLogicID equals c.ID
+                                        orderby c.Sheet, a.Number, b.ID
                                         select new { a.Number, a.Value, b.ID, Labels = b.Value, Businesslogicid = c.ID, c.Sheet }).ToList();
 
 
@@ -47,7 +48,7 @@ namespace ClientBilling.Controllers
                 }
 
                 var numbers = businesslogicdetails.Where(xx => xx.Sheet == sheets[x]).Select(xx => xx.Number).Distinct().ToList();
-                var numbersbygroup = businesslogicdetails.Where(xx => xx.Sheet == sheets[x]).GroupBy(g => g.Number).ToList();
+                var numbersbygroup = businesslogicdetails.Where(xx => xx.Sheet == sheets[x]).GroupBy(g => g.Number).ToList(); //Details
                 List<DetailModel> DetailModels = new List<DetailModel>();
                 foreach(var numb in numbersbygroup)
                 {

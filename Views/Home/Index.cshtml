@@ -42,6 +42,8 @@
     });
     //}); -- end of function 
 
+    //codemaint[1].Details.push({ "DetailID": 888, "DetailModelValues": [{ "value": "testing" }, { "value": "testing" }, { "value": "testing" }, { "value": "testing" }, { "value": "testing" }] });
+
 </script>
 
 <div class="container">
@@ -65,12 +67,14 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Modal Header</h4>
                 </div>
-                <div class="modal-body">
-                    <p><label>GL_Database</label><input type='text' /></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
-                </div>
+                <form method="post" action="http://localhost:50008/?data=1">
+                    <div class="modal-body">
+                        <table></table>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" id="submitnew" class="btn btn-default" data-dismiss="modal" />
+                    </div>
+                </form>
             </div>
 
         </div>
@@ -106,5 +110,17 @@
         $(".pagination").append($("<li><a href='http://localhost:50008/?data=" + d + "'>" + codemaint[d].Sheet + "</a></li>"));
     }
 
+    //Dynamically Fill Modal Overlay Inputs
+    for (d = 0; d < codemaint[businesslogicsheet].Titles.length; d++)
+    {
+        $('form > .modal-body > table').append($("<tr><td><label>" + codemaint[businesslogicsheet].Titles[d] + "</label></td><td><input class='newinputs' type='text' value='testing" + d + "'/></td></tr>"));
+    }
+
+    $("#submitnew").click(function () {
+        codemaint[1].Details.push({ "DetailID": (codemaint[businesslogicsheet].Details.length + 1), "DetailModelValues": [{ "value": "testing" }, { "value": "testing" }, { "value": "testing" }, { "value": "testing" }, { "value": "testing" }] });
+        console.log(codemaint);
+    });
+    
+    //alert(document.getElementsByClassName("newinputs")[3].value);
 
 </script>
