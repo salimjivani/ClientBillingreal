@@ -33,7 +33,6 @@
         data: "data",
         success: function (json) {
             console.log(json);
-            //$('#codemaint').html(json[3].Titles[7] + " : " + json[3].Details[0].DetailModelValues[7].value);
             codemaint = json;
         },
         error: function () {
@@ -41,8 +40,6 @@
         }
     });
     //}); -- end of function 
-
-    //codemaint[1].Details.push({ "DetailID": 888, "DetailModelValues": [{ "value": "testing" }, { "value": "testing" }, { "value": "testing" }, { "value": "testing" }, { "value": "testing" }] });
 
 </script>
 
@@ -116,11 +113,23 @@
         $('form > .modal-body > table').append($("<tr><td><label>" + codemaint[businesslogicsheet].Titles[d] + "</label></td><td><input class='newinputs' type='text' value='testing" + d + "'/></td></tr>"));
     }
 
+    //Adding new Items to Webpage
     $("#submitnew").click(function () {
-        codemaint[1].Details.push({ "DetailID": (codemaint[businesslogicsheet].Details.length + 1), "DetailModelValues": [{ "value": "testing" }, { "value": "testing" }, { "value": "testing" }, { "value": "testing" }, { "value": "testing" }] });
-        console.log(codemaint);
+        codemaint[businesslogicsheet].Details.push({ "DetailID": (codemaint[businesslogicsheet].Details.length + 1), "DetailModelValues": [] });
+
+        var insertdetails = codemaint[businesslogicsheet].Details.length - 1;
+
+        $(".mainpanel" + businesslogicsheet + "> #panelbody" + businesslogicsheet).append($("<div class='row row" + insertdetails + "'></div><hr>"));
+
+        var insertrows = codemaint[businesslogicsheet].Details.length - 1;
+
+        for (x = 0; x < codemaint[businesslogicsheet].Titles.length; x++)
+        {
+            codemaint[businesslogicsheet].Details[insertrows].DetailModelValues.push({ "value": document.getElementsByClassName("newinputs")[x].value });
+            $(".mainpanel" + businesslogicsheet + "> #panelbody" + businesslogicsheet + "> .row" + insertdetails).append($("<div class='col-md-4'><label>" + codemaint[businesslogicsheet].Titles[x] + "</label><br><input type='text' value='" + codemaint[businesslogicsheet].Details[insertrows].DetailModelValues[x].value  + "'/></div>"));   
+        }
     });
+
     
-    //alert(document.getElementsByClassName("newinputs")[3].value);
 
 </script>
