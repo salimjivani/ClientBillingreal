@@ -251,4 +251,24 @@
       <Association Name="Load_SummaryPayData" Member="Load" ThisKey="LoadID" OtherKey="ID" Type="Load" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.BusinessLogicDetailsTesting" Member="BusinessLogicDetailsTestings">
+    <Type Name="BusinessLogicDetailsTesting">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Number" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BusinessLogicID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.InsertintoBusinessLogicDetails" Method="InsertintoBusinessLogicDetails">
+    <Parameter Name="Number" Parameter="number" Type="System.Int32" DbType="Int" />
+    <Parameter Name="BusinessLogicLabelID" Parameter="businessLogicLabelID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Value" Parameter="value" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.insertintosample" Method="insertintosample">
+    <Parameter Name="number" Type="System.Int32" DbType="Int" />
+    <Parameter Name="businesslogicid" Type="System.Int32" DbType="Int" />
+    <Parameter Name="value" Type="System.String" DbType="VarChar(MAX)" />
+    <Return Type="System.Int32" />
+  </Function>
 </Database>

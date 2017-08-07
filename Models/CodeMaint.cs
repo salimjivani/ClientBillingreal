@@ -23,8 +23,15 @@ namespace ClientBilling.Models
         public string value { get; set; }
     }
 
+    public class InsertDetails
+    {
+        public int Numbers { get; set; }
+        public int BusinesslogicIDs { get; set; }
+        public string Values { get; set; }
+    }
 
 }
+
 
 
 

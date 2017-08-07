@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ClientBilling.Models;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Web.Services;
 
 namespace ClientBilling.Controllers
 {
@@ -76,6 +77,27 @@ namespace ClientBilling.Controllers
             return Json(rootobj, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        //public JsonResult InsertBusinessLogic(List<string> DetailModel)
+        //public string InsertBusinessLogic(DetailModel DetailModel)
+        public JsonResult InsertBusinessLogic(List<InsertDetails> InsertDetails)
+        {
+            ClientBillingDataContext cm = new ClientBillingDataContext();
+/*
+            var insertions = new List<InsertDetails>();
+
+            InsertDetails insertdets = new InsertDetails()
+            {
+                Insertstring = new List<string>()
+            };
+
+            insertdets.Insertstring.Add("hello");
+
+            //cm.insertintosample(Int32.Parse(DetailModel[0]), 200, "SalimTesting");
+*/
+            return Json("text", JsonRequestBehavior.AllowGet);
+            //return "success";
+        }
 
         public ActionResult About()
         {

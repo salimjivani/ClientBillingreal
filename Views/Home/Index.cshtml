@@ -50,7 +50,7 @@
             <div id="businesslogicpagination">
                 <ul class="pagination"></ul>
             </div>
-            <input type="submit" />
+            <button type="button" id="submitall">Submit</button>
         </form>
     </div>
 
@@ -130,6 +130,34 @@
         }
     });
 
+    var InsertDetailsobj = [];
+    for (x = 0; x < codemaint[3].Details.length; x++)
+    {
+        InsertDetailsobj.push({ "Numbers": x + 1, "BusinesslogicIDs": 2929, "Values": codemaint[3].Details[0].DetailModelValues.length });
+    }
+    
+    console.log(InsertDetailsobj);
+
+    InsertDetailsobj = JSON.stringify({ 'InsertDetails': InsertDetailsobj });
+    
+    $("#submitall").click(function () {
+        console.log(InsertDetailsobj);
+        $.ajax({
+            type: "POST",
+            url: "Home/InsertBusinessLogic",
+            data: InsertDetailsobj,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (insertdata)
+            {
+                console.log(insertdata);
+            },
+            error: function () {
+                console.log("ERROR");
+            }
+        });
+    });
+    
     
 
 </script>
