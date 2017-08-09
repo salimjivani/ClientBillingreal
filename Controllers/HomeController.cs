@@ -78,25 +78,17 @@ namespace ClientBilling.Controllers
         }
 
         [HttpPost]
-        //public JsonResult InsertBusinessLogic(List<string> DetailModel)
-        //public string InsertBusinessLogic(DetailModel DetailModel)
         public JsonResult InsertBusinessLogic(List<InsertDetails> InsertDetails)
         {
             ClientBillingDataContext cm = new ClientBillingDataContext();
-/*
-            var insertions = new List<InsertDetails>();
 
-            InsertDetails insertdets = new InsertDetails()
+            foreach (var a in InsertDetails)
             {
-                Insertstring = new List<string>()
-            };
+                cm.insertintosample(a.Numbers, 3333, a.Values);
+            }
+            //cm.insertintosample(InsertDetails[0].Numbers,3333,InsertDetails[0].Values);
 
-            insertdets.Insertstring.Add("hello");
-
-            //cm.insertintosample(Int32.Parse(DetailModel[0]), 200, "SalimTesting");
-*/
             return Json("text", JsonRequestBehavior.AllowGet);
-            //return "success";
         }
 
         public ActionResult About()

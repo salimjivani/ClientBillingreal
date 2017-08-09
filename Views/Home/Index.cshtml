@@ -131,17 +131,31 @@
     });
 
     var InsertDetailsobj = [];
-    for (x = 0; x < codemaint[3].Details.length; x++)
+/*
+    for (x = 0; x < codemaint[businesslogicsheet].Details.length; x++)
     {
-        InsertDetailsobj.push({ "Numbers": x + 1, "BusinesslogicIDs": 2929, "Values": codemaint[3].Details[0].DetailModelValues.length });
+        for (y = 0; y < codemaint[businesslogicsheet].Details[x].DetailModelValues.length; y++)
+        {
+            InsertDetailsobj.push({ "Numbers": x + 1, "BusinesslogicIDs": codemaint[businesslogicsheet].Titles[y], "Values": codemaint[businesslogicsheet].Details[x].DetailModelValues[y].value });
+        }
     }
-    
+
     console.log(InsertDetailsobj);
 
     InsertDetailsobj = JSON.stringify({ 'InsertDetails': InsertDetailsobj });
-    
+*/
     $("#submitall").click(function () {
+
+        for (x = 0; x < codemaint[businesslogicsheet].Details.length; x++) {
+            for (y = 0; y < codemaint[businesslogicsheet].Details[x].DetailModelValues.length; y++) {
+                InsertDetailsobj.push({ "Numbers": x + 1, "BusinesslogicIDs": codemaint[businesslogicsheet].Titles[y], "Values": codemaint[businesslogicsheet].Details[x].DetailModelValues[y].value });
+            }
+        }
+
         console.log(InsertDetailsobj);
+
+        InsertDetailsobj = JSON.stringify({ 'InsertDetails': InsertDetailsobj });
+
         $.ajax({
             type: "POST",
             url: "Home/InsertBusinessLogic",
