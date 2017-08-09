@@ -223,13 +223,6 @@ namespace ClientBilling
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertintoBusinessLogicDetails")]
-		public int InsertintoBusinessLogicDetails([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Number", DbType="Int")] System.Nullable<int> number, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="BusinessLogicLabelID", DbType="Int")] System.Nullable<int> businessLogicLabelID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Value", DbType="VarChar(255)")] string value)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), number, businessLogicLabelID, value);
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.insertintosample")]
 		public int insertintosample([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> number, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> businesslogicid, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(MAX)")] string value)
 		{

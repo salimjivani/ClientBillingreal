@@ -9,6 +9,7 @@ namespace ClientBilling.Models
     {
         public string Sheet { get; set; }
         public List<string> Titles { get; set; }
+        public List<int> BusinesslogicIDs { get; set; }
         public List<DetailModel> Details { get; set; }
     }
 
@@ -25,8 +26,9 @@ namespace ClientBilling.Models
 
     public class InsertDetails
     {
+        public int Sheets { get; set; }
         public int Numbers { get; set; }
-        public string BusinesslogicIDs { get; set; }
+        public int BusinesslogicIDs { get; set; }
         public string Values { get; set; }
     }
 

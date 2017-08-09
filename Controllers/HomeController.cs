@@ -39,6 +39,7 @@ namespace ClientBilling.Controllers
                 {
                     Sheet = sheets[x],
                     Titles = new List<string>(),
+                    BusinesslogicIDs = new List<int>(),
                     Details = new List<DetailModel>()
                 };
 
@@ -48,6 +49,12 @@ namespace ClientBilling.Controllers
                     realcodemaint.Titles.Add(titles[y]);
                 }
 
+                var blogicids = businesslogicdetails.Where(xx => xx.Sheet == sheets[x]).Select(xx => xx.ID).Distinct().ToList(); //TitleID
+                for (int z = 0; z < blogicids.Count(); z++)
+                {
+                    realcodemaint.BusinesslogicIDs.Add(blogicids[z]);
+                }
+                
                 var numbers = businesslogicdetails.Where(xx => xx.Sheet == sheets[x]).Select(xx => xx.Number).Distinct().ToList();
                 var numbersbygroup = businesslogicdetails.Where(xx => xx.Sheet == sheets[x]).GroupBy(g => g.Number).ToList(); //Details
                 List<DetailModel> DetailModels = new List<DetailModel>();
@@ -81,12 +88,13 @@ namespace ClientBilling.Controllers
         public JsonResult InsertBusinessLogic(List<InsertDetails> InsertDetails)
         {
             ClientBillingDataContext cm = new ClientBillingDataContext();
-
+            
             foreach (var a in InsertDetails)
             {
-                cm.insertintosample(a.Numbers, 3333, a.Values);
+                cm.insertintosample(a.Numbers, a.BusinesslogicIDs, a.Values);
             }
-            //cm.insertintosample(InsertDetails[0].Numbers,3333,InsertDetails[0].Values);
+
+            //cm.insertintosample(20,999,"Salim is testing");
 
             return Json("text", JsonRequestBehavior.AllowGet);
         }

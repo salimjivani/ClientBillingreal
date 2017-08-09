@@ -259,12 +259,6 @@
       <Column Name="Value" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
     </Type>
   </Table>
-  <Function Name="dbo.InsertintoBusinessLogicDetails" Method="InsertintoBusinessLogicDetails">
-    <Parameter Name="Number" Parameter="number" Type="System.Int32" DbType="Int" />
-    <Parameter Name="BusinessLogicLabelID" Parameter="businessLogicLabelID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Value" Parameter="value" Type="System.String" DbType="VarChar(255)" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.insertintosample" Method="insertintosample">
     <Parameter Name="number" Type="System.Int32" DbType="Int" />
     <Parameter Name="businesslogicid" Type="System.Int32" DbType="Int" />

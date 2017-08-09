@@ -96,7 +96,7 @@
             $(".mainpanel" + a + "> #panelbody" + a).append($("<div class='row row" + b + "'></div><hr>"));
             for (c = 0; c < codemaint[a].Titles.length; c++)
             {
-                $(".mainpanel" + a + "> #panelbody" + a + "> .row" + b).append($("<div class='col-md-4'><label>" + codemaint[a].Titles[c] + "</label><br><input type='text' value='" + codemaint[a].Details[b].DetailModelValues[c].value + "'/></div>"));
+                $(".mainpanel" + a + "> #panelbody" + a + "> .row" + b).append($("<div class='col-md-4'><label>" + codemaint[a].Titles[c] + "</label><br><input type='text' class='inputs' value='" + codemaint[a].Details[b].DetailModelValues[c].value + "'/></div>"));
             }
         }
     }
@@ -110,7 +110,7 @@
     //Dynamically Fill Modal Overlay Inputs
     for (d = 0; d < codemaint[businesslogicsheet].Titles.length; d++)
     {
-        $('form > .modal-body > table').append($("<tr><td><label>" + codemaint[businesslogicsheet].Titles[d] + "</label></td><td><input class='newinputs' type='text' value='testing" + d + "'/></td></tr>"));
+        $('form > .modal-body > table').append($("<tr><td><label>" + codemaint[businesslogicsheet].Titles[d] + "</label></td><td><input class='newinputs inputs' type='text' value='testing" + d + "'/></td></tr>"));
     }
 
     //Adding new Items to Webpage
@@ -126,29 +126,28 @@
         for (x = 0; x < codemaint[businesslogicsheet].Titles.length; x++)
         {
             codemaint[businesslogicsheet].Details[insertrows].DetailModelValues.push({ "value": document.getElementsByClassName("newinputs")[x].value });
-            $(".mainpanel" + businesslogicsheet + "> #panelbody" + businesslogicsheet + "> .row" + insertdetails).append($("<div class='col-md-4'><label>" + codemaint[businesslogicsheet].Titles[x] + "</label><br><input type='text' value='" + codemaint[businesslogicsheet].Details[insertrows].DetailModelValues[x].value  + "'/></div>"));   
+            $(".mainpanel" + businesslogicsheet + "> #panelbody" + businesslogicsheet + "> .row" + insertdetails).append($("<div class='col-md-4'><label>" + codemaint[businesslogicsheet].Titles[x] + "</label><br><input type='text' class='inputs' value='" + codemaint[businesslogicsheet].Details[insertrows].DetailModelValues[x].value  + "'/></div>"));   
         }
     });
 
-    var InsertDetailsobj = [];
-/*
-    for (x = 0; x < codemaint[businesslogicsheet].Details.length; x++)
-    {
-        for (y = 0; y < codemaint[businesslogicsheet].Details[x].DetailModelValues.length; y++)
-        {
-            InsertDetailsobj.push({ "Numbers": x + 1, "BusinesslogicIDs": codemaint[businesslogicsheet].Titles[y], "Values": codemaint[businesslogicsheet].Details[x].DetailModelValues[y].value });
-        }
-    }
+    //alert(document.getElementsByClassName("inputs")[5].value);
 
-    console.log(InsertDetailsobj);
-
-    InsertDetailsobj = JSON.stringify({ 'InsertDetails': InsertDetailsobj });
-*/
+    //Send Data back to DB
     $("#submitall").click(function () {
-
+        /*
+        var InsertDetailsobj = [];
         for (x = 0; x < codemaint[businesslogicsheet].Details.length; x++) {
             for (y = 0; y < codemaint[businesslogicsheet].Details[x].DetailModelValues.length; y++) {
-                InsertDetailsobj.push({ "Numbers": x + 1, "BusinesslogicIDs": codemaint[businesslogicsheet].Titles[y], "Values": codemaint[businesslogicsheet].Details[x].DetailModelValues[y].value });
+                InsertDetailsobj.push({ "Numbers": x + 1, "BusinesslogicIDs": codemaint[businesslogicsheet].BusinesslogicIDs[y], "Values": codemaint[businesslogicsheet].Details[x].DetailModelValues[y].value, "Sheets" : businesslogicsheet });
+            }
+        }
+        */
+        var z = 0;
+        var InsertDetailsobj = [];
+        for (x = 0; x < codemaint[businesslogicsheet].Details.length; x++) {
+            for (y = 0; y < codemaint[businesslogicsheet].BusinesslogicIDs.length; y++) {
+                InsertDetailsobj.push({ "Numbers": x + 1, "BusinessLogicids": codemaint[businesslogicsheet].BusinesslogicIDs[y], "Values": document.getElementsByClassName("inputs")[z].value });
+                z++;
             }
         }
 
@@ -169,7 +168,7 @@
             error: function () {
                 console.log("ERROR");
             }
-        });
+        }); 
     });
     
     
