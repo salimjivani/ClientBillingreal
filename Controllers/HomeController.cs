@@ -85,18 +85,65 @@ namespace ClientBilling.Controllers
         }
 
         [HttpPost]
-        public JsonResult InsertBusinessLogic(List<InsertDetails> InsertDetails)
+        public JsonResult InsertBusinessLogic(List<InsertDetails> InsertDetail)
         {
             ClientBillingDataContext cm = new ClientBillingDataContext();
-            
-            foreach (var a in InsertDetails)
+
+            var BusinessLogicTestingList = (from a in cm.BusinessLogicDetails
+                                            join b in cm.BusinessLogicLabels on a.BusinessLogicLabelID equals b.ID
+                                            join c in cm.BusinessLogics on b.BusinessLogicID equals c.ID
+                                            where c.ID == 2
+                                            select new { a.Number, a.BusinessLogicLabelID, a.Value, a.ID }).ToList();
+
+            var NewInserts = new List<InsertDetails>();
+
+            foreach (var b in InsertDetail)
+            {
+                InsertDetails dets = new InsertDetails()
+                {
+                    Values = b.Values,
+                    Numbers = b.Numbers,
+                    BusinesslogicIDs = b.BusinesslogicIDs
+                };
+                NewInserts.Add(dets);
+            }
+
+            var differences = new List<InsertDetails>();
+
+            foreach (var c in NewInserts)
+            {
+                //Check for new entry
+                if (!BusinessLogicTestingList.Any(x => x.Number == c.Numbers))
+                {
+                    InsertDetails changes = new InsertDetails()
+                    {
+                        Values = c.Values,
+                        Numbers = c.Numbers,
+                        BusinesslogicIDs = c.BusinesslogicIDs
+                    };
+                    differences.Add(changes);
+                }
+                
+                //Check for updated entry
+                else if (!BusinessLogicTestingList.Any(x => x.Value == c.Values && x.Number == c.Numbers))
+                {
+                    InsertDetails changes = new InsertDetails()
+                    {
+                        Values = c.Values,
+                        Numbers = c.Numbers,
+                        BusinesslogicIDs = c.BusinesslogicIDs
+                    };
+                    differences.Add(changes);
+                }
+                
+            }
+
+            foreach (var a in differences)
             {
                 cm.insertintosample(a.Numbers, a.BusinesslogicIDs, a.Values);
             }
 
-            //cm.insertintosample(20,999,"Salim is testing");
-
-            return Json("text", JsonRequestBehavior.AllowGet);
+            return Json(differences, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult About()

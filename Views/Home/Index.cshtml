@@ -41,9 +41,12 @@
     });
     //}); -- end of function 
 
+
 </script>
 
 <div class="container">
+
+
     <div id="codemaintinputs">
         <form method="post">
             <div id="codemaint"></div>
@@ -130,18 +133,9 @@
         }
     });
 
-    //alert(document.getElementsByClassName("inputs")[5].value);
-
     //Send Data back to DB
     $("#submitall").click(function () {
-        /*
-        var InsertDetailsobj = [];
-        for (x = 0; x < codemaint[businesslogicsheet].Details.length; x++) {
-            for (y = 0; y < codemaint[businesslogicsheet].Details[x].DetailModelValues.length; y++) {
-                InsertDetailsobj.push({ "Numbers": x + 1, "BusinesslogicIDs": codemaint[businesslogicsheet].BusinesslogicIDs[y], "Values": codemaint[businesslogicsheet].Details[x].DetailModelValues[y].value, "Sheets" : businesslogicsheet });
-            }
-        }
-        */
+
         var z = 0;
         var InsertDetailsobj = [];
         for (x = 0; x < codemaint[businesslogicsheet].Details.length; x++) {
@@ -153,7 +147,7 @@
 
         console.log(InsertDetailsobj);
 
-        InsertDetailsobj = JSON.stringify({ 'InsertDetails': InsertDetailsobj });
+        InsertDetailsobj = JSON.stringify({ 'InsertDetail': InsertDetailsobj });
 
         $.ajax({
             type: "POST",
@@ -170,7 +164,6 @@
             }
         }); 
     });
-    
     
 
 </script>

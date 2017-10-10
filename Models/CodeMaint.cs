@@ -27,9 +27,14 @@ namespace ClientBilling.Models
     public class InsertDetails
     {
         public int Sheets { get; set; }
-        public int Numbers { get; set; }
-        public int BusinesslogicIDs { get; set; }
+        public int? Numbers { get; set; }
+        public int? BusinesslogicIDs { get; set; }
         public string Values { get; set; }
+    }
+
+    public class LoadList
+    {
+        public List<string> TimeStampList { get; set; }
     }
 
 }
