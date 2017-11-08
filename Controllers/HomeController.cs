@@ -92,7 +92,7 @@ namespace ClientBilling.Controllers
             var BusinessLogicTestingList = (from a in cm.BusinessLogicDetails
                                             join b in cm.BusinessLogicLabels on a.BusinessLogicLabelID equals b.ID
                                             join c in cm.BusinessLogics on b.BusinessLogicID equals c.ID
-                                            where c.ID == 2
+                                            //where c.ID == 2
                                             select new { a.Number, a.BusinessLogicLabelID, a.Value, a.ID }).ToList();
 
             var NewInserts = new List<InsertDetails>();
@@ -110,10 +110,11 @@ namespace ClientBilling.Controllers
 
             var differences = new List<InsertDetails>();
 
+
             foreach (var c in NewInserts)
             {
                 //Check for new entry
-                if (!BusinessLogicTestingList.Any(x => x.Number == c.Numbers))
+                if (!BusinessLogicTestingList.Any(x => x.Number == c.Numbers && x.BusinessLogicLabelID == c.BusinesslogicIDs))
                 {
                     InsertDetails changes = new InsertDetails()
                     {
@@ -123,9 +124,8 @@ namespace ClientBilling.Controllers
                     };
                     differences.Add(changes);
                 }
-                
                 //Check for updated entry
-                else if (!BusinessLogicTestingList.Any(x => x.Value == c.Values && x.Number == c.Numbers))
+                else if (!BusinessLogicTestingList.Any(x => x.Value == c.Values && x.Number == c.Numbers && x.BusinessLogicLabelID == c.BusinesslogicIDs))
                 {
                     InsertDetails changes = new InsertDetails()
                     {
@@ -142,6 +142,12 @@ namespace ClientBilling.Controllers
             {
                 cm.insertintosample(a.Numbers, a.BusinesslogicIDs, a.Values);
             }
+
+            var yardi = (from a in cm.BusinessLogicDetails where a.BusinessLogicLabelID == 18 && a.Value.Contains("Yardi") select a.Value).ToList();
+
+            var onesite = (from a in cm.BusinessLogicDetails where a.BusinessLogicLabelID == 18 && a.Value.Contains("OneSite") select a.Value).ToList();
+
+            var contacts = (from a in cm.BusinessLogicDetails where a.BusinessLogicLabelID == 30 select a.Value).Distinct().ToList();
 
             return Json(differences, JsonRequestBehavior.AllowGet);
         }
