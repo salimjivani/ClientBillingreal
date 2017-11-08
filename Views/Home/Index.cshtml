@@ -23,28 +23,21 @@
 
     var codemaint = [];
 
-    //$("#codemaint").ready(function () {
-    $.ajax({
-        url: "/Home/Businesslogicinputs",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: false,
-        type: "POST",
-        data: "data",
-        success: function (json) {
-            console.log(json);
-            codemaint = json;
-        },
-        error: function () {
-            $("#codemaint").html("ERROR");
-        }
-    });
-    //}); -- end of function 
 
 
 </script>
+<button type='button' id='add' data-toggle='modal' data-target='#myModal' class='btn-success'>Add +</button>
 
-<div class="container">
+<div class="container-fluid">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
 
 
     <div id="codemaintinputs">
@@ -86,23 +79,58 @@
 
 <script>
 
-    var panels = "<div id='mainpanel' class='panel panel-default'><div id='panelheading' class='panel-heading'>GLDatabase(11)</div><div id='panelbody' class='panel-body'><div id='panelnumber'></div></div></div>";
-    var panelbody = "<div id='col-md-4' class='col-md-4'><label>GL_Database</label><input type='text' /></div>";
+
+    //$("#codemaint").ready(function () {
+    $.ajax({
+        url: "/Home/Businesslogicinputs",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: false,
+        type: "POST",
+        data: "data",
+        success: function (json) {
+            console.log(json);
+            codemaint = json;
+
+            //Table Header
+            for (x = 0; x < json[businesslogicsheet].Titles.length; x++)
+            {
+                $("table > thead > tr").append("<th>" + json[businesslogicsheet].Titles[x] + "</th>");
+            }
+
+            //Table Rows
+            for (x = 0; x < json[businesslogicsheet].Details.length; x++)
+            {
+                $("table > tbody").append("<tr id=" + x + " value='hello'><td><button id=" + x + ">Edit</button></td></tr>");
+                //Table Data
+                for (y = 0; y < json[businesslogicsheet].BusinesslogicIDs.length; y++) {
+                    $("#" + x).append("<td>" + json[businesslogicsheet].Details[x].DetailModelValues[y].value + "</td>");
+                }
+            }
+        },
+        error: function () {
+            $("#codemaint").html("ERROR");
+        }
+    });
+    //}); -- end of function 
+
+    //var panels = "<div id='mainpanel' class='panel panel-default'><div id='panelheading' class='panel-heading'>GLDatabase(11)</div><div id='panelbody' class='panel-body'><div id='panelnumber'></div></div></div>";
+    //var panelbody = "<div id='col-md-4' class='col-md-4'><label>GL_Database</label><input type='text' /></div>";
 
     //Dynamically filling up input boxes
     //for (a = 0; a < codemaint.length; a++)
-    for (a = businesslogicsheet; a < businesslogicsheet + 1; a++)
-    {
-        $("#codemaint").append($("<div class='panel panel-default mainpanel" + a + "'><div id='panelheading' class='panel-heading'>" + codemaint[a].Sheet + "<div class='pull-right'><button type='button' id='add' data-toggle='modal' data-target='#myModal' class='btn-success'>Add +</button></div></div><div id='panelbody" + a + "' class='panel-body panelbody" + a + "'><div id='panelnumber'></div></div></div>"));
-        for (b = 0; b < codemaint[a].Details.length; b++)
-        {
-            $(".mainpanel" + a + "> #panelbody" + a).append($("<div class='row row" + b + "'></div><hr>"));
-            for (c = 0; c < codemaint[a].Titles.length; c++)
-            {
-                $(".mainpanel" + a + "> #panelbody" + a + "> .row" + b).append($("<div class='col-md-4'><label>" + codemaint[a].Titles[c] + "</label><br><input type='text' class='inputs' value='" + codemaint[a].Details[b].DetailModelValues[c].value + "'/></div>"));
-            }
-        }
-    }
+    //for (a = businesslogicsheet; a < businesslogicsheet + 1; a++)
+    //{
+    //    $("#codemaint").append($("<div class='panel panel-default mainpanel" + a + "'><div id='panelheading' class='panel-heading'>" + codemaint[a].Sheet + "<div class='pull-right'><button type='button' id='add' data-toggle='modal' data-target='#myModal' class='btn-success'>Add +</button></div></div><div id='panelbody" + a + "' class='panel-body panelbody" + a + "'><div id='panelnumber'></div></div></div>"));
+    //    for (b = 0; b < codemaint[a].Details.length; b++)
+    //    {
+    //        $(".mainpanel" + a + "> #panelbody" + a).append($("<div class='row row" + b + "'></div><hr>"));
+    //        for (c = 0; c < codemaint[a].Titles.length; c++)
+    //        {
+    //            $(".mainpanel" + a + "> #panelbody" + a + "> .row" + b).append($("<div class='col-md-4'><label>" + codemaint[a].Titles[c] + "</label><br><input type='text' class='inputs' value='" + codemaint[a].Details[b].DetailModelValues[c].value + "'/></div>"));
+    //        }
+    //    }
+    //}
 
     //Dynamically filling up Pagination
     for (d = 0; d < codemaint.length; d++)
@@ -129,7 +157,13 @@
         for (x = 0; x < codemaint[businesslogicsheet].Titles.length; x++)
         {
             codemaint[businesslogicsheet].Details[insertrows].DetailModelValues.push({ "value": document.getElementsByClassName("newinputs")[x].value });
-            $(".mainpanel" + businesslogicsheet + "> #panelbody" + businesslogicsheet + "> .row" + insertdetails).append($("<div class='col-md-4'><label>" + codemaint[businesslogicsheet].Titles[x] + "</label><br><input type='text' class='inputs' value='" + codemaint[businesslogicsheet].Details[insertrows].DetailModelValues[x].value  + "'/></div>"));   
+            //$(".mainpanel" + businesslogicsheet + "> #panelbody" + businesslogicsheet + "> .row" + insertdetails).append($("<div class='col-md-4'><label>" + codemaint[businesslogicsheet].Titles[x] + "</label><br><input type='text' class='inputs' value='" + codemaint[businesslogicsheet].Details[insertrows].DetailModelValues[x].value  + "'/></div>"));   
+        }
+        $("table > tbody").append("<tr id=" + (codemaint[businesslogicsheet].Details.length - 1) + " value='hello'><td><button>Edit</button></td></tr>");
+
+        for (x = 0; x < codemaint[businesslogicsheet].Details[(codemaint[businesslogicsheet].Details.length - 1)].DetailModelValues.length; x++)
+        {
+            $("#" + (codemaint[businesslogicsheet].Details.length - 1)).append("<td>" + codemaint[businesslogicsheet].Details[(codemaint[businesslogicsheet].Details.length - 1)].DetailModelValues[x].value + "</td>");
         }
     });
 
