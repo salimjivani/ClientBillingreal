@@ -61,11 +61,34 @@
                     <h4 class="modal-title">Modal Header</h4>
                 </div>
                 <form method="post" action="http://localhost:50008/?data=1">
-                    <div class="modal-body">
+                    <div class="modal-body modalbodyadd">
                         <table></table>
                     </div>
                     <div class="modal-footer">
                         <input type="submit" id="submitnew" class="btn btn-default" data-dismiss="modal" />
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Edit Modal -->
+    <div class="modal fade" id="editmyModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!--Edit Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <form method="post" action="http://localhost:50008/?data=1">
+                    <div class="modal-body modalbodyedit">
+                        <table></table>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" id="submitedit" class="submitedit btn btn-default" data-dismiss="modal" />
                     </div>
                 </form>
             </div>
@@ -101,10 +124,10 @@
             //Table Rows
             for (x = 0; x < json[businesslogicsheet].Details.length; x++)
             {
-                $("table > tbody").append("<tr id=" + x + " value='hello'><td><button id=" + x + ">Edit</button></td></tr>");
+                $("table > tbody").append("<tr id=" + x + "><td><button class='edit' data-toggle='modal' data-target='#editmyModal' value=" + x + ">Edit</button></td></tr>");
                 //Table Data
                 for (y = 0; y < json[businesslogicsheet].BusinesslogicIDs.length; y++) {
-                    $("#" + x).append("<td>" + json[businesslogicsheet].Details[x].DetailModelValues[y].value + "</td>");
+                    $("#" + x).append("<td class='details" + y + "'>" + json[businesslogicsheet].Details[x].DetailModelValues[y].value + "</td>");
                 }
             }
         },
@@ -135,14 +158,37 @@
     //Dynamically filling up Pagination
     for (d = 0; d < codemaint.length; d++)
     {
-        $(".pagination").append($("<li><a href='http://localhost:50008/?data=" + d + "'>" + codemaint[d].Sheet + "</a></li>"));
+        $(".pagination").append($("<li><a href='../?data=" + d + "'>" + codemaint[d].Sheet + "</a></li>"));
     }
 
     //Dynamically Fill Modal Overlay Inputs
     for (d = 0; d < codemaint[businesslogicsheet].Titles.length; d++)
     {
-        $('form > .modal-body > table').append($("<tr><td><label>" + codemaint[businesslogicsheet].Titles[d] + "</label></td><td><input class='newinputs inputs' type='text' value='testing" + d + "'/></td></tr>"));
+        $('form > .modalbodyadd > table').append($("<tr><td><label>" + codemaint[businesslogicsheet].Titles[d] + "</label></td><td><input class='newinputs inputs' type='text' value='testing" + d + "'/></td></tr>"));
     }
+
+    //Dynamically Fill Edit Modal Overlay Inputs
+    $(".edit").click(function () {
+        var buttonvalue = $(this).val();
+        $('form > .modalbodyedit > table').html('');
+        $('.submitedit').attr("id", buttonvalue);
+        for (x = 0; x < codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues.length; x++)
+        {
+            $('form > .modalbodyedit > table').append($("<tr><td><label>" + codemaint[businesslogicsheet].Titles[x] + "</label></td><td><input class='editinputs inputs' type='text' value='" + codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues[x].value + "'/></td></tr>"));
+        }
+    });
+
+    //Submit Edit Modal
+    $(".submitedit").click(function () { 
+        var buttonvalue = $(this).attr("id");
+        for (x = 0; x < codemaint[businesslogicsheet].Titles.length; x++)
+        {
+            codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues[x].value = document.getElementsByClassName("editinputs")[x].value;
+            $("#" + buttonvalue + " > .details" + x).text(codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues[x].value);
+        }
+        console.log(codemaint);
+        
+    });
 
     //Adding new Items to Webpage
     $("#submitnew").click(function () {
@@ -174,7 +220,8 @@
         var InsertDetailsobj = [];
         for (x = 0; x < codemaint[businesslogicsheet].Details.length; x++) {
             for (y = 0; y < codemaint[businesslogicsheet].BusinesslogicIDs.length; y++) {
-                InsertDetailsobj.push({ "Numbers": x + 1, "BusinessLogicids": codemaint[businesslogicsheet].BusinesslogicIDs[y], "Values": document.getElementsByClassName("inputs")[z].value });
+                //InsertDetailsobj.push({ "Numbers": x + 1, "BusinessLogicids": codemaint[businesslogicsheet].BusinesslogicIDs[y], "Values": document.getElementsByClassName("inputs")[z].value });
+                InsertDetailsobj.push({ "Numbers": x + 1, "BusinessLogicids": codemaint[businesslogicsheet].BusinesslogicIDs[y], "Values": codemaint[businesslogicsheet].Details[x].DetailModelValues[y].value });
                 z++;
             }
         }
