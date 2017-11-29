@@ -135,25 +135,6 @@
             $("#codemaint").html("ERROR");
         }
     });
-    //}); -- end of function 
-
-    //var panels = "<div id='mainpanel' class='panel panel-default'><div id='panelheading' class='panel-heading'>GLDatabase(11)</div><div id='panelbody' class='panel-body'><div id='panelnumber'></div></div></div>";
-    //var panelbody = "<div id='col-md-4' class='col-md-4'><label>GL_Database</label><input type='text' /></div>";
-
-    //Dynamically filling up input boxes
-    //for (a = 0; a < codemaint.length; a++)
-    //for (a = businesslogicsheet; a < businesslogicsheet + 1; a++)
-    //{
-    //    $("#codemaint").append($("<div class='panel panel-default mainpanel" + a + "'><div id='panelheading' class='panel-heading'>" + codemaint[a].Sheet + "<div class='pull-right'><button type='button' id='add' data-toggle='modal' data-target='#myModal' class='btn-success'>Add +</button></div></div><div id='panelbody" + a + "' class='panel-body panelbody" + a + "'><div id='panelnumber'></div></div></div>"));
-    //    for (b = 0; b < codemaint[a].Details.length; b++)
-    //    {
-    //        $(".mainpanel" + a + "> #panelbody" + a).append($("<div class='row row" + b + "'></div><hr>"));
-    //        for (c = 0; c < codemaint[a].Titles.length; c++)
-    //        {
-    //            $(".mainpanel" + a + "> #panelbody" + a + "> .row" + b).append($("<div class='col-md-4'><label>" + codemaint[a].Titles[c] + "</label><br><input type='text' class='inputs' value='" + codemaint[a].Details[b].DetailModelValues[c].value + "'/></div>"));
-    //        }
-    //    }
-    //}
 
     //Dynamically filling up Pagination
     for (d = 0; d < codemaint.length; d++)
@@ -186,7 +167,7 @@
             codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues[x].value = document.getElementsByClassName("editinputs")[x].value;
             $("#" + buttonvalue + " > .details" + x).text(codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues[x].value);
         }
-        console.log(codemaint);
+        //console.log(codemaint);
         
     });
 

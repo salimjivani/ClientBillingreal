@@ -143,12 +143,6 @@ namespace ClientBilling.Controllers
                 cm.insertintosample(a.Numbers, a.BusinesslogicIDs, a.Values);
             }
 
-            var yardi = (from a in cm.BusinessLogicDetails where a.BusinessLogicLabelID == 18 && a.Value.Contains("Yardi") select a.Value).ToList();
-
-            var onesite = (from a in cm.BusinessLogicDetails where a.BusinessLogicLabelID == 18 && a.Value.Contains("OneSite") select a.Value).ToList();
-
-            var contacts = (from a in cm.BusinessLogicDetails where a.BusinessLogicLabelID == 30 select a.Value).Distinct().ToList();
-
             return Json(differences, JsonRequestBehavior.AllowGet);
         }
 
