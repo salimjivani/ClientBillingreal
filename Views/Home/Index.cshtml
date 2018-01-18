@@ -1,7 +1,9 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>
 <script>
 
     function $_GET(param) {
@@ -12,43 +14,35 @@
                 vars[key] = value !== undefined ? value : '';
             }
         );
-
         if (param) {
             return vars[param] ? vars[param] : null;
         }
         return vars;
     }
-
     var businesslogicsheet = Number($_GET('data'));
 
     var codemaint = [];
 
 
+    $('.loadsubmit').on('click', function () {
+        var $this = $(this);
+        $this.button('loading');
+        setTimeout(function () {
+            $this.button('reset');
+        }, 2000);
+    });
 
 </script>
+<style>
+    .modal-dialog {
+        position: fixed;
+        left: 50%;
+        clear: both;
+    }
+</style>
 <button type='button' id='add' data-toggle='modal' data-target='#myModal' class='btn-success'>Add +</button>
 
-<div class="container-fluid">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-
-
-
-    <div id="codemaintinputs">
-        <form method="post">
-            <div id="codemaint"></div>
-            <div id="businesslogicpagination">
-                <ul class="pagination"></ul>
-            </div>
-            <button type="button" id="submitall">Submit</button>
-        </form>
-    </div>
+<div class="container">
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
@@ -58,7 +52,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
+                    <h4 class="modal-title">Add</h4>
                 </div>
                 <form method="post" action="http://localhost:50008/?data=1">
                     <div class="modal-body modalbodyadd">
@@ -81,7 +75,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
+                    <h4 class="modal-title">Edit</h4>
                 </div>
                 <form method="post" action="http://localhost:50008/?data=1">
                     <div class="modal-body modalbodyedit">
@@ -96,12 +90,23 @@
         </div>
     </div>
 
+        <table id="codemaintdatatable" class="table table-striped table-bordered"></table>
+
+    <div id="codemaintinputs">
+        <form method="post">
+            <div id="codemaint"></div>
+            <div id="businesslogicpagination">
+                <ul class="pagination" id="paginate"></ul>
+            </div>
+            <!--<button type="button" id="submitall">Submit</button>-->
+            <button type="button" class="btn-primary btn-lg " id="submitall" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing Order">Submit Order</button>
+        </form>
+    </div>
 
     </div>
 
 
 <script>
-
 
     //$("#codemaint").ready(function () {
     $.ajax({
@@ -112,64 +117,72 @@
         type: "POST",
         data: "data",
         success: function (json) {
-            console.log(json);
+            //console.log(json);
             codemaint = json;
 
-            //Table Header
-            for (x = 0; x < json[businesslogicsheet].Titles.length; x++)
-            {
-                $("table > thead > tr").append("<th>" + json[businesslogicsheet].Titles[x] + "</th>");
+            var datat = {
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "data": [[]],
+                "columns": [],
+                "aaSorting": []
+            };
+
+            datat.columns[0] = {};
+            datat.columns[0] = { "title": "Edit", "stitle": "Edit" };
+            for (x = 0; x < json[businesslogicsheet].Titles.length; x++) {
+                datat.columns[x + 1] = {};
+                datat.columns[x + 1] = { "title": json[businesslogicsheet].Titles[x], "stitle": json[businesslogicsheet].Titles[x]};
             }
 
-            //Table Rows
-            for (x = 0; x < json[businesslogicsheet].Details.length; x++)
-            {
-                $("table > tbody").append("<tr id=" + x + "><td><button class='edit' data-toggle='modal' data-target='#editmyModal' value=" + x + ">Edit</button></td></tr>");
+            for (x = 0; x < json[businesslogicsheet].Details.length; x++) {
+                datat.data[x] = ["<button class='edit' data-toggle='modal' data-target='#editmyModal' value=" + x + ">Edit</button><button id='delete' value=" + x + ">Delete</button>"];
                 //Table Data
                 for (y = 0; y < json[businesslogicsheet].BusinesslogicIDs.length; y++) {
-                    $("#" + x).append("<td class='details" + y + "'>" + json[businesslogicsheet].Details[x].DetailModelValues[y].value + "</td>");
+                    datat.data[x].push(json[businesslogicsheet].Details[x].DetailModelValues[y].value);
                 }
             }
+
+            console.log(datat);
+
+            $('#codemaintdatatable').dataTable(datat);
         },
         error: function () {
             $("#codemaint").html("ERROR");
         }
     });
 
-    //Dynamically filling up Pagination
-    for (d = 0; d < codemaint.length; d++)
-    {
-        $(".pagination").append($("<li><a href='../?data=" + d + "'>" + codemaint[d].Sheet + "</a></li>"));
-    }
-
-    //Dynamically Fill Modal Overlay Inputs
-    for (d = 0; d < codemaint[businesslogicsheet].Titles.length; d++)
-    {
-        $('form > .modalbodyadd > table').append($("<tr><td><label>" + codemaint[businesslogicsheet].Titles[d] + "</label></td><td><input class='newinputs inputs' type='text' value='testing" + d + "'/></td></tr>"));
-    }
+    var tabledata = $('#codemaintdatatable').DataTable();
 
     //Dynamically Fill Edit Modal Overlay Inputs
     $(".edit").click(function () {
         var buttonvalue = $(this).val();
         $('form > .modalbodyedit > table').html('');
         $('.submitedit').attr("id", buttonvalue);
-        for (x = 0; x < codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues.length; x++)
-        {
+        for (x = 0; x < codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues.length; x++) {
             $('form > .modalbodyedit > table').append($("<tr><td><label>" + codemaint[businesslogicsheet].Titles[x] + "</label></td><td><input class='editinputs inputs' type='text' value='" + codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues[x].value + "'/></td></tr>"));
         }
     });
 
+    //Dynamically Fill Modal Overlay Inputs
+    for (d = 0; d < codemaint[businesslogicsheet].Titles.length; d++) {
+        $('form > .modalbodyadd > table').append($("<tr><td><label>" + codemaint[businesslogicsheet].Titles[d] + "</label></td><td><input class='newinputs inputs' type='text' value=''/></td></tr>"));
+    }
+
     //Submit Edit Modal
-    $(".submitedit").click(function () { 
+    $(".submitedit").click(function () {
         var buttonvalue = $(this).attr("id");
-        for (x = 0; x < codemaint[businesslogicsheet].Titles.length; x++)
-        {
+        for (x = 0; x < codemaint[businesslogicsheet].Titles.length; x++) {
             codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues[x].value = document.getElementsByClassName("editinputs")[x].value;
             $("#" + buttonvalue + " > .details" + x).text(codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues[x].value);
         }
-        //console.log(codemaint);
-        
     });
+
+    //Dynamically filling up Pagination
+    for (d = 0; d < codemaint.length; d++)
+    {
+        $("#paginate").append($("<li><a href='../?data=" + d + "'>" + codemaint[d].Sheet + "</a></li>"));
+    }
 
     //Adding new Items to Webpage
     $("#submitnew").click(function () {
@@ -177,21 +190,25 @@
 
         var insertdetails = codemaint[businesslogicsheet].Details.length - 1;
 
-        $(".mainpanel" + businesslogicsheet + "> #panelbody" + businesslogicsheet).append($("<div class='row row" + insertdetails + "'></div><hr>"));
-
         var insertrows = codemaint[businesslogicsheet].Details.length - 1;
 
         for (x = 0; x < codemaint[businesslogicsheet].Titles.length; x++)
         {
             codemaint[businesslogicsheet].Details[insertrows].DetailModelValues.push({ "value": document.getElementsByClassName("newinputs")[x].value });
-            //$(".mainpanel" + businesslogicsheet + "> #panelbody" + businesslogicsheet + "> .row" + insertdetails).append($("<div class='col-md-4'><label>" + codemaint[businesslogicsheet].Titles[x] + "</label><br><input type='text' class='inputs' value='" + codemaint[businesslogicsheet].Details[insertrows].DetailModelValues[x].value  + "'/></div>"));   
         }
-        $("table > tbody").append("<tr id=" + (codemaint[businesslogicsheet].Details.length - 1) + " value='hello'><td><button>Edit</button></td></tr>");
 
-        for (x = 0; x < codemaint[businesslogicsheet].Details[(codemaint[businesslogicsheet].Details.length - 1)].DetailModelValues.length; x++)
-        {
-            $("#" + (codemaint[businesslogicsheet].Details.length - 1)).append("<td>" + codemaint[businesslogicsheet].Details[(codemaint[businesslogicsheet].Details.length - 1)].DetailModelValues[x].value + "</td>");
+        tabledata.row.add(["<button>Edit</button>", "Testing", "Testing description", "Inactive", "GLDB", "ALTCode", "Region", "Client", "Contact", "Vendor"]).draw();
+        console.log(codemaint);
+    });
+
+    //Delete Elements
+    $("table #delete").click(function () {
+        var value = $(this).val();
+        if (confirm("Are you sure you want to delete this line?") == true) {
+            tabledata.row($(this).parents('tr')).remove().draw(false);
         }
+        delete codemaint[businesslogicsheet].Details[value];
+        console.log(codemaint);
     });
 
     //Send Data back to DB
