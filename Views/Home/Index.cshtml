@@ -121,8 +121,8 @@
             codemaint = json;
 
             var datat = {
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "lengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]],
+                "aLengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]],
                 "data": [[]],
                 "columns": [],
                 "aaSorting": []
@@ -172,10 +172,12 @@
     //Submit Edit Modal
     $(".submitedit").click(function () {
         var buttonvalue = $(this).attr("id");
+        editdatatablearray = ["Change: EDITED"];
         for (x = 0; x < codemaint[businesslogicsheet].Titles.length; x++) {
             codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues[x].value = document.getElementsByClassName("editinputs")[x].value;
-            $("#" + buttonvalue + " > .details" + x).text(codemaint[businesslogicsheet].Details[buttonvalue].DetailModelValues[x].value);
+            editdatatablearray[x + 1] = document.getElementsByClassName("editinputs")[x].value;
         }
+        tabledata.row(buttonvalue).data(editdatatablearray);
     });
 
     //Dynamically filling up Pagination
@@ -192,12 +194,16 @@
 
         var insertrows = codemaint[businesslogicsheet].Details.length - 1;
 
+        //var adddatatablearray = ["<button class='edit' data-toggle='modal' data-target='#editmyModal' value=" + insertdetails + ">Edit</button><button id='delete' value=" + insertrows + ">Delete</button>"];
+        var adddatatablearray = ["Change: ADDED"];
+
         for (x = 0; x < codemaint[businesslogicsheet].Titles.length; x++)
         {
             codemaint[businesslogicsheet].Details[insertrows].DetailModelValues.push({ "value": document.getElementsByClassName("newinputs")[x].value });
+            adddatatablearray[x + 1] = document.getElementsByClassName("newinputs")[x].value;
         }
-
-        tabledata.row.add(["<button>Edit</button>", "Testing", "Testing description", "Inactive", "GLDB", "ALTCode", "Region", "Client", "Contact", "Vendor"]).draw();
+       
+        tabledata.row.add(adddatatablearray).draw();
         console.log(codemaint);
     });
 
