@@ -1,9 +1,11 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.10/datatables.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/1.0.0/css/dataTables.responsive.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.10/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.js"></script>
 <script>
 
     function $_GET(param) {
@@ -90,7 +92,8 @@
         </div>
     </div>
 
-        <table id="codemaintdatatable" class="table table-striped table-bordered"></table>
+    <table id="codemaintdatatable" class="table table-striped table-bordered dt-responsive"></table>
+    @*<table id="codemaintdatatable" class="table table-striped table-bordered"></table>*@
 
     <div id="codemaintinputs">
         <form method="post">
