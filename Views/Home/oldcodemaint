@@ -1,0 +1,217 @@
+@model EncompassPlusWebApp.Areas.CodeMaint.Models.CodeMaintViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+
+    //Get URL Parameter
+    function $_GET(param) {
+        var vars = {};
+        window.location.href.replace(location.hash, '').replace(
+            /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+            function (m, key, value) { // callback
+                vars[key] = value !== undefined ? value : '';
+            }
+        );
+
+        if (param) {
+            return vars[param] ? vars[param] : null;
+        }
+        return vars;
+    }
+
+    var businesslogicsheet = Number($_GET('data'));
+
+    var codemaint = [];
+
+    ////Get Business Logic Data
+    $.ajax({
+        url: "/CodeMaint/Default/BusinessLogicInput",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: false,
+        type: "POST",
+        data: "data",
+        success: function (json) {
+            console.log(json);
+            codemaint = json;
+
+    //        for (i = 0; i < json[0].Details.length; i++) {
+    //            var Row = ""
+    //            Row += '<tr>';
+    //            Row += '<td>';
+    //            Row += json[0].Details[i].DetailModelValues[0].value;
+    //            Row += '<td>';
+    //            Row += '<tr>';
+                
+    //            $('#tbodydata').append(Row);
+    //        }
+
+        },
+        error: function () {
+            console.log("ERROR");
+        }
+    });
+
+</script>
+
+<div class="container">
+    <div class="row" id="pagetitlesection" style="width:inherit; position: fixed; z-index:1">
+        <div class='jumbotron' id="titles" style="background-color:#f3f3f4"><h3 id="title"></h3><div class="codemaintdownload"><a href='/Dashboard/MainDashboard/CodeMaintenance'>Download Code Maintenance </a><span class="glyphicon glyphicon-download-alt"></span></div><ul class='pagination'></ul><div><button type='button' id='add' data-toggle='modal' data-target='#myModal' class='btn-success'>Add +</button><button type='button' class='btn-success pull-right' id='submitall'>Submit</button></div></div>
+    </div>
+    <!--<div class="col-md-12"><button class="btn-success" id="scrollto" style="position:fixed; z-index:1; right:0">Go To Submit</button></div> -->
+    
+    <!--<div id="businesslogicpagination" class="row">
+        <ul class="pagination"></ul>
+    </div>-->
+
+    @*<div>
+        <table>
+            <thead>
+                <tr>Property</tr>
+                <tr>Edit</tr>
+            </thead>
+            <tbody id="tbodydata">
+              <tr>
+                  <td></td>
+                  <td></td>
+              </tr>
+            </tbody>
+        </table>
+    </div>*@
+
+    <div id="codemaintinputs">
+        <form method="post">
+            <div id="codemaint"></div>
+        </form>
+    </div>
+
+
+    <div id="businesslogicpagination" class="row">
+        <ul class="pagination"></ul>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <form method="post" action="http://localhost:50008/?data=1">
+                    <div class="modal-body">
+                        <table></table>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" id="submitnew" class="btn btn-default" data-dismiss="modal" />
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+    <script type="text/javascript">
+
+        //Scroll to Bottom
+        $("#scrollto").on('click', function (event) {
+            $('html, body').animate({
+                scrollTop: $('#submitall').offset().top
+            }, 800)
+        });
+
+        //Dynamically filling up input boxes
+        for (a = businesslogicsheet; a < businesslogicsheet + 1; a++) {
+            $("#title").append(codemaint[a].Sheet);
+            //$("#codemaint").append($("<div class='panel panel-default mainpanel" + a + "'><div id='panelheading' class='panel-heading'>" + codemaint[a].Sheet + "<div class='pull-right'><button type='button'>Submit</button><button type='button' id='add' data-toggle='modal' data-target='#myModal' class='btn-success'>Add +</button></div></div><div id='panelbody" + a + "' class='panel-body panelbody" + a + "'><div id='panelnumber'></div></div><div class='panel-footer'><button type='button' class='btn-success' id='submitall'>Submit</button><div class='pull-right'><button type='button' id='add' data-toggle='modal' data-target='#myModal' class='btn-success'>Add +</button></div></div></div>"));
+            $("#codemaint").append($("<div class='panel panel-default mainpanel" + a + "'><div id='panelbody" + a + "' class='panel-body panelbody" + a + "'><div id='panelnumber'></div></div></div>"));
+            for (b = 0; b < codemaint[a].Details.length; b++) {
+                $(".mainpanel" + a + "> #panelbody" + a).append($("<div class='row row" + b + "'></div><hr>"));
+                for (c = 0; c < codemaint[a].Titles.length; c++) {
+                    $(".mainpanel" + a + "> #panelbody" + a + "> .row" + b).append($("<div class='col-md-4'><label>" + codemaint[a].Titles[c] + "</label><br><input type='text' class='inputs' value='" + codemaint[a].Details[b].DetailModelValues[c].value + "'/></div>"));
+                }
+            }
+        }
+
+        //Dynamically filling up Pagination
+        for (d = 0; d < codemaint.length; d++) {
+            $(".pagination").append($("<li><a href='../CodeMaint/Default?data=" + d + "'>" + codemaint[d].Sheet + "</a></li>"));
+        }
+
+        //Dynamically Fill Modal Overlay Inputs
+        for (d = 0; d < codemaint[businesslogicsheet].Titles.length; d++) {
+
+            $('form > .modal-body > table').append($("<tr><td><label>" + codemaint[businesslogicsheet].Titles[d] + "</label></td><td><input class='newinputs inputs' type='text' value=''/></td></tr>"));
+        }
+
+        //Adding new Items to Webpage
+        $("#submitnew").click(function () {
+            codemaint[businesslogicsheet].Details.push({ "DetailID": (codemaint[businesslogicsheet].Details.length + 1), "DetailModelValues": [] });
+
+            var insertdetails = codemaint[businesslogicsheet].Details.length - 1;
+
+            $(".mainpanel" + businesslogicsheet + "> #panelbody" + businesslogicsheet).append($("<div class='row row" + insertdetails + "'></div><hr>"));
+
+            var insertrows = codemaint[businesslogicsheet].Details.length - 1;
+
+            for (x = 0; x < codemaint[businesslogicsheet].Titles.length; x++) {
+                codemaint[businesslogicsheet].Details[insertrows].DetailModelValues.push({ "value": document.getElementsByClassName("newinputs")[x].value });
+                $(".mainpanel" + businesslogicsheet + "> #panelbody" + businesslogicsheet + "> .row" + insertdetails).append($("<div class='col-md-4'><label>" + codemaint[businesslogicsheet].Titles[x] + "</label><br><input type='text' class='inputs' value='" + codemaint[businesslogicsheet].Details[insertrows].DetailModelValues[x].value + "'/></div>"));
+            }
+        });
+
+        //Adding new Items to Table
+        $("#submitall").click(function () {
+            $("#submitall").html("<span>Submitted " + Date() + "</span>"); //Add DateTime for Submission Check
+            var z = 0;
+            var InsertDetailsobj = [];
+            for (x = 0; x < codemaint[businesslogicsheet].Details.length; x++) {
+                for (y = 0; y < codemaint[businesslogicsheet].BusinesslogicIDs.length; y++) {
+                    InsertDetailsobj.push({ "Numbers": x + 1, "BusinessLogicids": codemaint[businesslogicsheet].BusinesslogicIDs[y], "Values": document.getElementsByClassName("inputs")[z].value });
+                    z++;
+                }
+            }
+
+            console.log(InsertDetailsobj);
+
+            InsertDetailsobj = JSON.stringify({ 'InsertDetails': InsertDetailsobj });
+
+            $.ajax({
+                type: "POST",
+                url: "/CodeMaint/Default/InsertBusinessLogic",
+                data: InsertDetailsobj,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (insertdata)
+                {
+                    console.log(insertdata);
+                },
+                error: function () {
+                    console.log("ERROR");
+                }
+            });
+        });
+
+        //fixed sroll element
+        var fixedheight = $("#pagetitlesection").height();
+        $("#codemaintinputs").css("margin-top", fixedheight);
+
+        $(document).ready(function () {
+
+            $('.footable').footable();
+            $('.footable2').footable();
+
+
+        });
+
+    </script>
+}
